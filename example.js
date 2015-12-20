@@ -1,8 +1,3 @@
-// Change this to your publisher number
-// usage:
-// var PUBLISHER_ID = require('./indeed-config.js')
-// var Indeed = require('./indeed-callback.js')
-// var indeed_client = new Indeed(PUBLISHER_ID);
 var PUBLISHER_ID = require('./indeed-config.js');
 var Indeed = require('./indeed-callback.js');
 var indeed_client = new Indeed(PUBLISHER_ID);
