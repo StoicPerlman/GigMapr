@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var Indeed = require('../indeed.js');
 var promise = require('promise');
 var cities = require('cities');
-var INDEED_PUB_ID = 'FILL_ME_IN';
+
+var PUBLISHER_ID = require('../indeed-node/indeed-config.js');
+var Indeed = require('../indeed-node/indeed-promise.js');
 
 var states = {
     'AK': 'Alaska',
@@ -114,7 +115,7 @@ function getEachStateCount(query) {
         return results;
     });
 
-};
+}
 
 function getListings(query, location) {
     var fullText = '';
@@ -157,7 +158,7 @@ function getListings(query, location) {
 
 function getStateCount(query, state) {
     return search(query, state, 0, 0)
-};
+}
 ///////////////End Main///////////////
 
 
@@ -166,7 +167,7 @@ function getStateCount(query, state) {
 function search(query, location, limit, start) {
     limit = limit ? limit : 10;
     start = start ? start : 0;
-    var indeed_client = new Indeed(INDEED_PUB_ID);
+    var indeed_client = new Indeed(PUBLISHER_ID);
     var params = {
         'q': query,
         'l': location,
@@ -177,7 +178,7 @@ function search(query, location, limit, start) {
         'useragent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)"
     };
     return indeed_client.search(params);
-};
+}
 ///////End Indeed-Node-Wrapper////////
 
 
@@ -213,7 +214,7 @@ function cleanListings(listings) {
         }
     }
     return {'listings':jobs, 'fullText':fullText};
-};
+}
 
 function removeSpecial(text) {
     // only preserve ISO/IEC recognized languages
@@ -239,7 +240,7 @@ function removeSpecial(text) {
     text = text.trim();
 
     return text
-};
+}
 
 function fillAbbr(text) {
     // sub some common abbreviations
@@ -250,13 +251,13 @@ function fillAbbr(text) {
     regex = new RegExp(' vb ', 'gi');
     text = text.replace(regex, ' visual basic ');
     return text;
-};
+}
 
 function removeTags(text) {
     // remove HTML tags
     var regex = /(<([^>]+)>)/ig;
     return text.replace(regex, '');
-};
+}
 
 function getLatLongMeans(cityData, radius, cityName) {
     // get the total
@@ -331,9 +332,9 @@ function getKeyByValue(obj, value ) {
                 return prop;
         }
     }
-};
+}
 
 function escapeRegExp(str) {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-};
+}
 /////////////End Helpers/////////////
