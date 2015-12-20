@@ -1,4 +1,6 @@
 # IndeedMaps
+# IndeedMaps.com
+
 Author: Sam Kleiner
 
 Set INDEED_PUB_ID in routes/index.js 
