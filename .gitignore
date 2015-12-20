@@ -34,3 +34,6 @@ node_modules
 
 # mac
 .DS_Store
+
+# dont push config file
+indeed-config.js
