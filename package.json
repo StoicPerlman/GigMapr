@@ -1,7 +1,15 @@
 {
   "name": "IndeedMaps",
   "version": "0.1.0",
-  "private": true,
+  "description": "Map jobs found on Indeed.com.",
+  "author": {
+    "name": "Sam Kleiner"
+  },
+  "main": "./bin/www",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samjk14/IndeedMaps"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -12,6 +20,10 @@
     "express": "~4.13.1",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
-    "serve-favicon": "~2.3.0"
-  }
+    "serve-favicon": "~2.3.0",
+    "request-promise": "~1.0.2",
+    "cities": "~1.1.2",
+    "promise": "~7.0.4"
+  },
+  "license": "MIT"
 }
