@@ -63,8 +63,12 @@ var states = {
 
 //!* GET home page. *!/
 router.get('/', function(req, res) {
-    res.sendfile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 
+});
+
+router.get('/about', function(req, res) {
+    res.sendFile(__dirname + '/public/about.html');
 });
 
 router.get('/US/:query/', function(req, res) {
