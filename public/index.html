@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indeed Maps</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+</head>
+<body>
+<div id="bootstrapCssTest" class="hide"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12" style="padding: 5px 0 10px;">
+            <div class="form-group">
+                <label for="search">
+                    <h3>Indeed Job Search</h3>
+                </label>
+                <input id="search" type="text" class="form-control" value="">
+            </div>
+          <span class="input-group-btn">
+            <button id="goButton" type="button" class="btn btn-default action-button">Search!</button>
+          </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-12 well">
+                    <select id="statesDrp" class="form-control">
+                    </select>
+                </div>
+                <div class="col-sm-12">
+                    <div id="cloud" class="plot-output" style="width: 100% ; height: 400px"></div>
+                </div>
+                <div class="col-sm-12">
+                    <h3 id="statsLabel"></h3>
+                    <div id="stats" class="html-output"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="map" class="plot-output" style="text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!--Backuo local backuo-->
+<script>window.jQuery || document.write('<script src="/javascripts/jquery.min.js">\x3C/script>')</script>
+
+<!--Bootsrtap local backuo-->
+<script type="text/javascript">
+    if ($('#bootstrapCssTest').is(':visible') === true) {
+        $('<link href="/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" />').appendTo('head');
+    }
+</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!--Backuo local backuo-->
+<script>$.fn.modal || document.write('<script src="/javascripts/bootstrap.min.js">\x3C/script>')</script>
+
+
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<!--Backuo local backuo-->
+<script>if(typeof topojson === 'undefined') document.write('<script src="/javascripts/topojson.v1.min.js">\x3C/script>')</script>
+
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<!--Backuo local backuo-->
+<script>if(typeof d3 === 'undefined') document.write('<script src="/javascripts/d3.v3.min.js">\x3C/script>')</script>
+
+<!--add link after push updates-->
+<!--<script src="http://datamaps.github.io/scripts/0.4.2/datamaps.usa.min.js"></script>-->
+<!--Backuo local backuo-->
+<script>if(typeof Datamaps === 'undefined') document.write('<script src="/javascripts/datamaps.js">\x3C/script>')</script>
+
+<script src="/javascripts/script.js"></script>
+
+</body>
+</html>
