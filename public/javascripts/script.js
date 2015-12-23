@@ -52,7 +52,7 @@ $( document ).ready( function() {
         'WV': 'West Virginia',
         'WY': 'Wyoming'};
 
-    popDrpList();
+    popDrpList(document.getElementById('statesDrp'), states);
     var stateCenters = {};
     LoadUS();
 
@@ -63,37 +63,30 @@ $( document ).ready( function() {
             scope: 'usa', //currently supports 'usa' and 'world', however with custom map data you can specify your own
             projection: 'equirectangular', //style of projection to be used. try "mercator"
             height: 520, //if not null, datamaps will grab the height of 'element'
-            done: function (d) {
-            }, //callback when the map is done drawing
             fills: {
                 defaultFill: '#EDDC4E'
             },
-            dataType: 'json', //for use with dataUrl, currently 'json' or 'csv'. CSV should have an `id` column
             geographyConfig: {
                 highlightBorderColor: '#bada55',
                 popupTemplate: function (geography, data) {
                     return '<div class="hoverinfo">' + geography.properties.name + '</div>'
                 },
                 highlightBorderWidth: 2
-            },
+            }
         });
         USmap.labels();
     }
 
-    function FillUS(USdata) {
+    function FillUS(data) {
         document.getElementById("map").innerHTML = '';
         var USmap = new Datamap({
             element: document.getElementById("map"),
             scope: 'usa', //currently supports 'usa' and 'world', however with custom map data you can specify your own
             projection: 'equirectangular', //style of projection to be used. try "mercator"
             height: 520, //if not null, datamaps will grab the height of 'element'
-            done: function () {
-            }, //callback when the map is done drawing
             fills: {
                 defaultFill: '#EDDC4E'
             },
-            dataType: 'json', //for use with dataUrl, currently 'json' or 'csv'. CSV should have an `id` column
-            data:'',
             geographyConfig: {
                 highlightBorderColor: '#bada55',
                 popupTemplate: function (geography, data) {
@@ -102,7 +95,8 @@ $( document ).ready( function() {
                 highlightBorderWidth: 2
             }
         });
-        USmap.labels({'customLabelText': USdata});
+        USmap.labels({'customLabelText': data});
+        USmap.updateChoropleth(generateColorPallet(data, ['yellow', 'red']));
     }
 
     function FillState(data) {
@@ -123,12 +117,9 @@ $( document ).ready( function() {
 
                 return {path: path, projection: projection};
             },
-            done: function () {
-            },  //callback when the map is done drawing
             fills: {
                 defaultFill: '#EDDC4E'
             },
-            dataType: 'json', //for use with dataUrl, currently 'json' or 'csv'. CSV should have an `id` column
             geographyConfig: {
                 highlightBorderColor: '#bada55',
                 popupTemplate: function (geography, data) {
@@ -185,7 +176,7 @@ $( document ).ready( function() {
                     else {
                         setTimeout(check, 1000);  // check again in a second needs to be loaded before fill state
                     }
-                }
+                };
                 check();
             }
         }
@@ -212,11 +203,27 @@ $( document ).ready( function() {
     ///////////////Events///////////////
 
     ///////////////Helpers///////////////
-    function popDrpList() {
-        var drp = document.getElementById('statesDrp');
+    function popDrpList(drp, list) {
         drp.options[0] = new Option('United States', 'US');
-        for (var i in states) {
-            drp.options[drp.options.length] = new Option(states[i], i);
+        for (var i in list) {
+            drp.options[drp.options.length] = new Option(list[i], i);
         }
+    }
+
+    // state data {"PA": 234,...}
+    // array of color names for pallet
+    // color for low values to color for high values
+    function generateColorPallet(data, colors) {
+        var keysSorted = Object.keys(data).sort(function(a,b){return data[a]-data[b]});
+
+        var color = d3.scale.linear()
+            .domain([0, keysSorted.length])
+            .range(colors);
+        var colorPallet = {};
+
+        for (var i = 0; i < keysSorted.length; i++) {
+            colorPallet[keysSorted[i]] = color(i);
+        }
+        return colorPallet;
     }
 });
