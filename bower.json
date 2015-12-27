@@ -1,0 +1,26 @@
+{
+  "name": "IndeedMaps",
+  "description": "Map jobs found on Indeed.com.",
+  "main": "./bin/www",
+  "authors": [
+    "[Sam Kleiner]"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/samjk14/IndeedMaps",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.5.12",
+    "d3-cloud": "~1.2.1",
+    "bootstrap": "~3.3.6",
+//    "datamaps": "~0.4.2",
+    "jquery": "~2.1.4",
+    "topojson": "~1.6.19"
+  }
+}

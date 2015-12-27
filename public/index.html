@@ -30,9 +30,6 @@
                     </select>
                 </div>
                 <div class="col-sm-12">
-                    <div id="cloud" class="plot-output" style="width: 100% ; height: 400px"></div>
-                </div>
-                <div class="col-sm-12">
                     <h3 id="statsLabel"></h3>
                     <div id="stats" class="html-output"></div>
                 </div>
@@ -41,20 +38,23 @@
         <div class="col-sm-9">
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="map" class="plot-output" style="text-align: center;"></div>
+                    <div id="map" style="text-align: center;"></div>
+                </div>
+                <div class="col-sm-12">
+                    <div id="cloud" style="width: 100% ; height: 400px"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<footer style="position:absolute; bottom:0;">
-    <div class="container text-center">
-        <p style="font-size: large;font-weight: bold"><a href="/about">About this project</a></p>
-    </div>
-</footer>
+<!--<footer style="position:absolute; bottom:0;">-->
+    <!--<div class="container text-center">-->
+        <!--<p style="font-size: large;font-weight: bold"><a href="/about">About this project</a></p>-->
+    <!--</div>-->
+<!--</footer>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <!--Backuo local backuo-->
-<script>window.jQuery || document.write('<script src="/javascripts/jquery.min.js">\x3C/script>')</script>
+<script>window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js">\x3C/script>')</script>
 
 <!--Bootsrtap local backuo-->
 <script type="text/javascript">
@@ -65,23 +65,24 @@
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <!--Backuo local backuo-->
-<script>$.fn.modal || document.write('<script src="/javascripts/bootstrap.min.js">\x3C/script>')</script>
+<script>$.fn.modal || document.write('<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js">\x3C/script>')</script>
 
 
 <script src="//d3js.org/topojson.v1.min.js"></script>
 <!--Backuo local backuo-->
-<script>if(typeof topojson === 'undefined') document.write('<script src="/javascripts/topojson.v1.min.js">\x3C/script>')</script>
+<script>if(typeof topojson === 'undefined') document.write('<script src="/bower_components/topojson/topojson.js>\x3C/script>')</script>
 
 <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <!--Backuo local backuo-->
-<script>if(typeof d3 === 'undefined') document.write('<script src="/javascripts/d3.v3.min.js">\x3C/script>')</script>
+<script>if(typeof d3 === 'undefined') document.write('<script src="/bower_components/d3/d3.min.js">\x3C/script>')</script>
 
 <!--add link after push updates-->
 <!--<script src="http://datamaps.github.io/scripts/0.4.2/datamaps.usa.min.js"></script>-->
 <!--Backuo local backuo-->
 <script>if(typeof Datamaps === 'undefined') document.write('<script src="/javascripts/datamaps.js">\x3C/script>')</script>
 
-<script src="/javascripts/script.js"></script>
+<script src="/bower_components/d3-cloud/build/d3.layout.cloud.js"></script>
 
+<script src="/javascripts/script.js"></script>
 </body>
 </html>

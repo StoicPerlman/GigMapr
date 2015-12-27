@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var promise = require('promise');
 var cities = require('cities');
+var tm = require('textmining');
 
 var PUBLISHER_ID = require('../indeed-node/indeed-config.js');
 var Indeed = require('../indeed-node/indeed-promise.js');
@@ -80,24 +81,21 @@ router.get('/US/:query/', function(req, res) {
 
 router.get('/:state('+ Object.keys(states).join('|') + ')/:query/', function(req,res){
     getListings(req.params.query, req.params.state).then(function (resp) {
-        var results = [];
+        var allCityCounts = [];
         resp = cleanListings(resp)
         var listings = resp['listings']
-        // gets occurrences of each company and city
-        // reduces [{city:bradford,company:zippo}, {city:bradford,company:wallmart}.....]
-        // to {bradford:2} {zippo:1,walmart:1}
+        var bagOfWords = getWordCounts(resp['fullText']);
+
         var cityCounts = getCityCounts(listings);
-        //var comps = getCompanyCount(listings);   the two will be implimated later
+        //var comps = getCompanyCount(listings);   the two will be implemented later
         //comps = getTopTenCompanies(comps);
 
         // for each city in results lookup coordinates of city
-        // multiple coordinates exists for one city
-        // get the mean to find approximate center of city
         for (var cityName in cityCounts) {
             var cityData = cityLookup(cityName, req.params.state);
-            results.push(getLatLongMeans(cityData, cityCounts[cityName], cityName));
+            allCityCounts.push(getLatLongMeans(cityData, cityCounts[cityName], cityName));
         }
-        res.json(results);
+        res.json({cityCounts: allCityCounts, bagOfWords: bagOfWords});
     })
 });
 
@@ -122,7 +120,6 @@ function getEachStateCount(query) {
 }
 
 function getListings(query, location) {
-    var fullText = '';
     return getStateCount(query, location).then(function(resp) {
         var count = resp['totalResults'];
         var totalPages = Math.floor(count/25);
@@ -159,10 +156,6 @@ function getListings(query, location) {
         return resp;
     });
 };
-
-function getStateCount(query, state) {
-    return search(query, state, 0, 0)
-}
 ///////////////End Main///////////////
 
 
@@ -182,6 +175,10 @@ function search(query, location, limit, start) {
         'useragent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)"
     };
     return indeed_client.search(params);
+}
+
+function getStateCount(query, state) {
+    return search(query, state, 0, 0)
 }
 ///////End Indeed-Node-Wrapper////////
 
@@ -222,21 +219,25 @@ function cleanListings(listings) {
 
 function removeSpecial(text) {
     // only preserve ISO/IEC recognized languages
-    var regex = new RegExp(escapeRegExp('c#'), 'gi');
+    var regex = new RegExp('\s*' + escapeRegExp('c#') + '\s*', 'gi');
     text = text.replace(regex, ' cz ');
-    regex = new RegExp(escapeRegExp('c++'), 'gi');
+    regex = new RegExp('\s*' + escapeRegExp('c++') + '\s*', 'gi');
     text = text.replace(regex, ' czz ');
-    regex = new RegExp(escapeRegExp('.net'), 'gi');
+    regex = new RegExp('\s*' + escapeRegExp('.net') + '\s*', 'gi');
     text = text.replace(regex, ' znet ');
 
-    // remove non alpha or non num or non space and lower
-    text = text.replace(/[^a-zA-Z0-9 ]/g, ' ')
+    // remove non alpha  or non space and lower
+    text = text.replace(/[^a-zA-Z ]/g, ' ')
     text = text.toLowerCase();
 
     // put languages back
     text = text.replace(new RegExp('czz', 'g'), ' C++ ');
     text = text.replace(new RegExp('cz', 'g'), ' C# ');
     text = text.replace(new RegExp('znet', 'g'), ' .NET ');
+
+    // remove one letter words except c cuz its a language
+    var regex = new RegExp(' [a-bd-z] ', 'gi');
+    text = text.replace(regex, ' ');
 
     text = fillAbbr(text);
     // remove double, triple, etc spaces and spaces at end
@@ -248,11 +249,11 @@ function removeSpecial(text) {
 
 function fillAbbr(text) {
     // sub some common abbreviations
-    var regex = new RegExp(' jr ', 'gi');
+    var regex = new RegExp('\s*jr\s*', 'gi');
     text = text.replace(regex, ' junior ');
-    regex = new RegExp(' sr ', 'gi');
+    regex = new RegExp('\s*sr\s*', 'gi');
     text = text.replace(regex, ' senior ');
-    regex = new RegExp(' vb ', 'gi');
+    regex = new RegExp('\s*vb\s*', 'gi');
     text = text.replace(regex, ' visual basic ');
     return text;
 }
@@ -263,6 +264,27 @@ function removeTags(text) {
     return text.replace(regex, '');
 }
 
+function getWordCounts(text) {
+    text = tm.getTermsFrequency(tm.removeStopWords(text));
+    text.sort(function(a, b) {
+        return b.frequency - a.frequency;
+    })
+
+    var bag = [];
+    for (var i in text){
+        bag[i] = {};
+        bag[i]['text'] = text[i]['term'];
+        bag[i]['size'] = Math.max(Math.min(Math.sqrt(text[i]['frequency']) + 10, 50), 20);
+        if (i >= 100) {
+            break;
+        }
+    }
+    console.log(bag)
+    return bag;
+}
+
+// multiple coordinates exists for one city
+// get the mean to find approximate center of city
 function getLatLongMeans(cityData, radius, cityName) {
     // get the total
     var lat = 0;
@@ -304,6 +326,9 @@ function getCompanyCount(listings) {
     return comps;
 }
 
+// gets occurrences of each company and city
+// reduces [{city:bradford,company:zippo}, {city:bradford,company:wallmart}.....]
+// to {bradford:2} {zippo:1,walmart:1}
 function getCityCounts(listings) {
     var city = {};
     for (var i in listings) {

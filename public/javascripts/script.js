@@ -126,13 +126,44 @@ $( document ).ready( function() {
                     return '<div class="hoverinfo">' + geography.properties.name + '</div>'
                 },
                 highlightBorderWidth: 2
-            },
+            }
         });
         Statemap.bubbles(data, {
             popupTemplate: function (geo, data) {
                 return '<div class="hoverinfo">' +  data.city + '</div>';
             }
         });
+    }
+
+    function FillCloud(termFreq) {
+        document.getElementById("cloud").innerHTML = '';
+        var fill = d3.scale.category20();
+        d3.layout.cloud().size([960, 600])
+            .words(termFreq)
+            .padding(1)
+            .rotate(function() { return ~~(Math.random() * 2) * 90; })
+            .font("Impact")
+            .fontSize(function(d) { return d.size; })
+            .on("end", draw)
+            .start();
+        function draw(words) {
+            d3.select("#cloud").append("svg")
+                .attr("width", 960)
+                .attr("height", 600)
+                .append("g")
+                .attr("transform", "translate(480,300)")
+                .selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function(d) { return d.size + "px"; })
+                .style("font-family", "Impact")
+                .style("fill", function(d, i) { return fill(i); })
+                .attr("text-anchor", "middle")
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function(d) { return d.text; });
+        }
     }
     ///////////////Main///////////////
 
@@ -152,7 +183,8 @@ $( document ).ready( function() {
             'url': '/' + $('#statesDrp').val() + '/' + encodeURIComponent($('#search').val()),
             'dataType':'json',
             'success': function (data) {
-                FillState(data);
+                FillState(data['cityCounts']);
+                FillCloud(data['bagOfWords']);
             }
         });
     };
@@ -174,7 +206,7 @@ $( document ).ready( function() {
                         getStateStats()
                     }
                     else {
-                        setTimeout(check, 1000);  // check again in a second needs to be loaded before fill state
+                        setTimeout(check, 500);  // check again in half second needs to be loaded before fill state
                     }
                 };
                 check();
@@ -193,7 +225,7 @@ $( document ).ready( function() {
                         getStateStats()
                     }
                     else {
-                        setTimeout(check, 1000); // check again in a second needs to be loaded before fill state
+                        setTimeout(check, 500); // check again in half second needs to be loaded before fill state
                     }
                 };
                 check();
