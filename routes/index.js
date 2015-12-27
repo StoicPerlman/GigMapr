@@ -274,12 +274,12 @@ function getWordCounts(text) {
     for (var i in text){
         bag[i] = {};
         bag[i]['text'] = text[i]['term'];
+        // text size min 20 max 50 default square root of freq + 10
         bag[i]['size'] = Math.max(Math.min(Math.sqrt(text[i]['frequency']) + 10, 50), 20);
         if (i >= 100) {
             break;
         }
     }
-    console.log(bag)
     return bag;
 }
 
