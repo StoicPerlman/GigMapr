@@ -3,7 +3,15 @@
 
 Author: Sam Kleiner
 
-Set INDEED_PUB_ID in routes/index.js 
+git pull https://github.com/samjk14/IndeedMaps
+
+cd IndeedMaps
+
+npm install
+
+bower install
+
+Set INDEED_PUB_ID in indeed-node/indeed-config.js 
 to your indeed.com publisher id
 
 
