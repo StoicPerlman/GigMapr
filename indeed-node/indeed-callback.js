@@ -1,7 +1,6 @@
 var httpIndeed = require('request');
 
 module.exports = Indeed = function(publisher){
-
     this.publisher = publisher;
 
     this.httpOptions = {'url':'http://api.indeed.com/ads/apisearch', 'qs':''};
@@ -55,5 +54,4 @@ module.exports = Indeed = function(publisher){
             }
         }
     };
-
 };
