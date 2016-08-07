@@ -75,8 +75,8 @@ router.get('/about', function(req, res) {
 router.get('/US/:query/', function(req, res) {
     getEachStateCount(req.params.query).then(function (resp) {
             res.json(resp);
-        }
-    );
+            console.log(resp);
+    });
 });
 
 router.get('/:state('+ Object.keys(states).join('|') + ')/:query/', function(req,res){
@@ -96,6 +96,7 @@ router.get('/:state('+ Object.keys(states).join('|') + ')/:query/', function(req
             allCityCounts.push(getLatLongMeans(cityData, cityCounts[cityName], cityName));
         }
         res.json({cityCounts: allCityCounts, bagOfWords: bagOfWords});
+        console.log({cityCounts: allCityCounts, bagOfWords: bagOfWords});
     })
 });
 
