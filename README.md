@@ -1,20 +1,25 @@
 # GigMapr
+Author: Sam Kleiner
 #### GigMapr.com
 
-Author: Sam Kleiner
+---
 
-git pull https://github.com/StoicPerlman/GigMapr
+#### Config
+- Install docker
+- Optional: Fill in Indeed PUBLISHER_ID in indeed-node/indeed-config.js (or set during docker run later)
 
-cd GigMapr
+---
 
-npm install
+#### Run
+```sh
+$ git pull https://github.com/StoicPerlman/GigMapr
+$ cd GigMapr
+$ docker build -t gigmapr:latest .
+$ docker run -it --rm -p 80:3000 -e INDEED_PUB=0000000000000000 gigmapr
+```
 
-bower install
+---
 
-Set INDEED_PUB_ID in indeed-node/indeed-config.js 
-to your indeed.com publisher id
+> Note: This site uses the indeed.com API. I am in no way associated with indeed.com.
 
-
-Check out the original project GigMapr-R https://github.com/samjk14/GigMapr-R
-
-This will be updated to show instilation process as thougoughly as the original project when time permits
+Check out the original project GigMapr-R https://github.com/StoicPerlman/GigMapr-R
