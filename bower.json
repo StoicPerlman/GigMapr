@@ -1,12 +1,12 @@
 {
-  "name": "IndeedMaps",
-  "description": "Map jobs found on Indeed.com.",
+  "name": "GigMapr",
+  "description": "Uses Indeed.com API to map jobs throughout the US..",
   "main": "./bin/www",
   "authors": [
     "[Sam Kleiner]"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/samjk14/IndeedMaps",
+  "homepage": "https://github.com/StoicPerlman/GigMapr",
   "ignore": [
     "**/.*",
     "node_modules",
